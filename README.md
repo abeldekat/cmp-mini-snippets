@@ -1,7 +1,9 @@
 # cmp_mini_snippets
 
-[mini.snippets] completion source for [nvim-cmp]
-Mini.snippets is a plugin to manage and expand snippets.
+This plugin is a completion source for [nvim-cmp],
+providing the snippets produced by [mini.snippets].
+
+[mini.snippets] is a plugin to manage and expand snippets.
 
 Currently, the plugin is in [beta].
 
