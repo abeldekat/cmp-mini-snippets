@@ -1,5 +1,15 @@
 --[[
 :h cmp-develop
+
+-- TODO: cmp-luasnip caches the -produced- list by ft
+-- TODO: cmp-luasnip caches the -produced- documentation by ft
+-- TODO: The documentation window has ts highlighting. How to handle global snippets?
+--
+-- TODO: Mini.snippets.expand, in execute. Optimize perhaps, the snippet is already available
+-- TODO: Investigate luasnip show_condition
+
+-- NOTE: Mini.snippets does not have autosnippets. Luasnip's snip.hidden property does not apply
+-- NOTE: Mini.snippets does not have snippet priority
 --]]
 
 local cmp = require("cmp")
@@ -10,8 +20,8 @@ local source = {}
 -- Creates a markdown representation f the snippet
 ---@return string
 local function get_documentation(snippet)
-  local header = (snippet.label or "") .. "\n"
-  local docstring = { "", "```", snippet.body, "```" }
+  local header = (snippet.prefix or "") .. " _ `[" .. vim.bo.filetype .. "]`\n"
+  local docstring = { "", "```" .. vim.bo.filetype, snippet.body, "```" }
   local documentation = { header .. "---", (snippet.desc or ""), docstring }
   documentation = util.convert_input_to_markdown_lines(documentation)
 
@@ -38,8 +48,6 @@ function source:is_available() -- lazy-loading...
   return ok
 end
 
--- TODO: cmp-luasnip caches the produced list by ft
---
 ---Invoke completion (required).
 -- -@param params cmp.SourceCompletionApiParams
 ---@param callback fun(response: lsp.CompletionResponse|nil)
@@ -62,8 +70,6 @@ function source:complete(_, callback)
   callback(items)
 end
 
--- TODO: cmp-luasnip caches the produced documentation as well
---
 ---Resolve completion item (optional). This is called right before the completion is about to be displayed.
 ---Useful for setting the text shown in the documentation window (`completion_item.documentation`).
 ---@param completion_item lsp.CompletionItem
@@ -77,8 +83,7 @@ function source:resolve(completion_item, callback) -- modified from cmp-luasnip:
   callback(completion_item)
 end
 
--- TODO: cmp-luasnip has a fairly extensive implementation. Keep it simple for now.
--- TODO: Maybe this can be optimized by passing the choosen snippet to MiniSnippets.expand...
+-- NOTE: The implementation in cmp-luasnip is fairly extensive implementation. Keep it simple for now.
 --
 ---Executed after the item was selected.
 ---@param completion_item lsp.CompletionItem
