@@ -1,7 +1,6 @@
 # cmp_mini_snippets
 
 [mini.snippets] completion source for [nvim-cmp]
-
 Mini.snippets is a plugin to manage and expand snippets.
 
 Currently, the plugin is in [beta].
@@ -77,8 +76,9 @@ return {
 }
 ```
 
-Note: There is a [LazyVim-PR] that implements an extra for mini.snippets..
-File "plugins/extras/coding/mini_snippets_with_sources.lua" contains a relevant setup.
+## LazyVim
+
+There is a [LazyVim-PR] implementing an extra for mini.snippets..
 
 ## Acknowledgments
 
@@ -86,8 +86,8 @@ File "plugins/extras/coding/mini_snippets_with_sources.lua" contains a relevant 
 - [nvim-cmp] and sources by @hrsh7th
 - [mini.snippets] by @echasnovski
 
-[mini.snippets]: (https://github.com/echasnovski/mini.snippets)
-[nvim-cmp]: (https://github.com/hrsh7th/nvim-cmp)
-[cmp_luasnip]: (https://github.com/saadparwaiz1/cmp_luasnip)
-[LazyVim-PR]: (https://github.com/LazyVim/LazyVim/pull/5274)
-[beta]: (https://github.com/echasnovski/mini.nvim/issues/1428)
+[mini.snippets]: https://github.com/echasnovski/mini.snippets
+[nvim-cmp]: https://github.com/hrsh7th/nvim-cmp
+[cmp_luasnip]: https://github.com/saadparwaiz1/cmp_luasnip
+[LazyVim-PR]: https://github.com/LazyVim/LazyVim/pull/5274
+[beta]: https://github.com/echasnovski/mini.nvim/issues/1428
