@@ -48,7 +48,7 @@ end)
 
 ```lua
 return {
-  -- Do read the installation section in mini.snippets readme!
+  -- Do read the installation section in the readme of mini.snippets!
   {
     "echasnovski/mini.snippets",
     dependencies = "rafamadriz/friendly-snippets",
@@ -58,7 +58,7 @@ return {
     }
   },
 
-  -- Do read the installation section in nvim-cmp readme!
+  -- Do read the installation section in the readme of nvim-cmp!
   {
     "hrsh7th/nvim-cmp"
     dependencies = { "abeldekat/cmp-mini-snippets" }, -- this plugin
@@ -80,7 +80,7 @@ return {
 
 ## LazyVim
 
-There is a [LazyVim-PR] implementing an extra for mini.snippets..
+See this [LazyVim-PR] implementing an extra for mini.snippets..
 
 ## Acknowledgments
 
