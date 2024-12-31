@@ -5,7 +5,7 @@ providing the snippets produced by [mini.snippets].
 
 [mini.snippets] is a plugin to manage and expand snippets.
 
-Currently, the plugin is in [beta].
+Currently, [mini.snippets] is in [beta].
 
 ## Installation
 
