@@ -28,7 +28,7 @@ later(function()
   -- Do read the installation section in the readme of nvim-cmp!
   add({
     source = "hrsh7th/nvim-cmp",
-    depends = { "abeldekat/cmp-mini-snippets" }, -- add path, buffer and more...
+    depends = { "abeldekat/cmp-mini-snippets" }, -- this plugin
   })
   require'cmp'.setup {
     sources = { { name = 'mini_snippets' } },
@@ -61,7 +61,7 @@ return {
   -- Do read the installation section in nvim-cmp readme!
   {
     "hrsh7th/nvim-cmp"
-    dependencies = { "abeldekat/cmp-mini-snippets" }, -- more sources...
+    dependencies = { "abeldekat/cmp-mini-snippets" }, -- this plugin
     event = "InsertEnter",
     opts = {
       sources = { { name = 'mini_snippets' } },
