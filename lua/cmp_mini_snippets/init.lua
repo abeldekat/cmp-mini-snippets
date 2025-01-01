@@ -1,8 +1,7 @@
 --[[
 :h cmp-develop
 
--- TODO: cmp-luasnip caches the -produced- list by ft
--- TODO: cmp-luasnip caches the -produced- documentation by ft
+-- TODO: cmp-luasnip caches the -produced- list and documentation by ft. Worth it?
 -- TODO: The documentation window has ts highlighting. How to handle global snippets?
 --
 -- TODO: Mini.snippets.expand, in execute. Optimize perhaps, the snippet is already available
@@ -17,7 +16,7 @@ local util = require("vim.lsp.util")
 
 local source = {}
 
--- Creates a markdown representation f the snippet
+-- Creates a markdown representation of the snippet
 ---@return string
 local function get_documentation(snippet)
   local header = (snippet.prefix or "") .. " _ `[" .. vim.bo.filetype .. "]`\n"
@@ -61,10 +60,8 @@ function source:complete(_, callback)
       word = snippet.prefix,
       label = snippet.prefix,
       kind = cmp.lsp.CompletionItemKind.Snippet,
-      data = {
-        -- cmp-luasnip also has priority, filetype, show_condition and auto...
-        snippet = snippet, -- cmp-luasnip only stores the snippet-id...
-      },
+      -- cmp-luasnip also has priority, filetype, show_condition and auto:
+      data = { snippet = snippet }, -- cmp-luasnip only stores the snippet-id...
     }
   end
   callback(items)
@@ -83,8 +80,6 @@ function source:resolve(completion_item, callback) -- modified from cmp-luasnip:
   callback(completion_item)
 end
 
--- NOTE: The implementation in cmp-luasnip is fairly extensive implementation. Keep it simple for now.
---
 ---Executed after the item was selected.
 ---@param completion_item lsp.CompletionItem
 ---@param callback fun(completion_item: lsp.CompletionItem|nil)
