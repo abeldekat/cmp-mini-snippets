@@ -1,17 +1,12 @@
---[[
-:h cmp-develop
-
--- NOTE: Mini.snippets does not have autosnippets. Luasnip's snip.hidden property does not apply
--- NOTE: Mini.snippets does not have snippet priority
---]]
+-- :h cmp-develop
 
 local cmp = require("cmp")
 local util = require("vim.lsp.util")
 
 local source = {}
 
--- NOTE: A fenced code block after convert_input_to_markdown_lines is probably ok.
 -- Creates a markdown representation of the snippet
+-- A fenced code block after convert_input_to_markdown_lines is probably ok.
 ---@return string
 local function get_documentation(snippet)
   local header = (snippet.prefix or "") .. " _ `[" .. vim.bo.filetype .. "]`\n"
@@ -20,6 +15,18 @@ local function get_documentation(snippet)
   documentation = util.convert_input_to_markdown_lines(documentation)
 
   return table.concat(documentation, "\n")
+end
+
+-- Remove the word inserted by nvim-cmp and insert snippet
+-- It's safe to assume that mode is insert during completion
+local function insert_snippet(snippet, word)
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  cursor[1] = cursor[1] - 1 -- nvim_buf_set_text: line is zero based
+  local start_col = cursor[2] - #word
+  vim.api.nvim_buf_set_text(0, cursor[1], start_col, cursor[1], cursor[2], {})
+
+  local insert = MiniSnippets.config.expand.insert or MiniSnippets.default_insert
+  insert({ body = snippet.body }) -- insert at cursor
 end
 
 source.new = function() return setmetatable({}, { __index = source }) end
@@ -55,7 +62,6 @@ function source:complete(_, callback)
       word = snippet.prefix,
       label = snippet.prefix,
       kind = cmp.lsp.CompletionItemKind.Snippet,
-      -- cmp-luasnip also has priority, filetype, show_condition and auto:
       data = { snippet = snippet }, -- cmp-luasnip only stores the snippet-id...
     }
   end
@@ -79,7 +85,7 @@ end
 ---@param completion_item lsp.CompletionItem
 ---@param callback fun(completion_item: lsp.CompletionItem|nil)
 function source:execute(completion_item, callback)
-  MiniSnippets.expand()
+  insert_snippet(completion_item.data.snippet, completion_item.word)
   callback(completion_item)
 end
 
