@@ -87,7 +87,7 @@ return {
 
 ## LazyVim and mini.snippets
 
-See this [LazyVim-PR] proposal for a mini.snippets "extra"...
+See this [LazyVim] PR for a mini.snippets "extra"...
 
 ## Acknowledgments
 
@@ -98,5 +98,5 @@ See this [LazyVim-PR] proposal for a mini.snippets "extra"...
 [mini.snippets]: https://github.com/echasnovski/mini.snippets
 [nvim-cmp]: https://github.com/hrsh7th/nvim-cmp
 [cmp_luasnip]: https://github.com/saadparwaiz1/cmp_luasnip
-[LazyVim-PR]: https://github.com/LazyVim/LazyVim/pull/5274
+[LazyVim]: https://github.com/LazyVim/LazyVim/pull/5274
 [beta]: https://github.com/echasnovski/mini.nvim/issues/1428

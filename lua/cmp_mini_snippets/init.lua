@@ -1,12 +1,6 @@
 --[[
 :h cmp-develop
 
--- TODO: cmp-luasnip caches the -produced- list and documentation by ft. Worth it?
--- TODO: The documentation window has ts highlighting. How to handle global snippets?
---
--- TODO: Mini.snippets.expand, in execute. Optimize perhaps, the snippet is already available
--- TODO: Investigate luasnip show_condition
-
 -- NOTE: Mini.snippets does not have autosnippets. Luasnip's snip.hidden property does not apply
 -- NOTE: Mini.snippets does not have snippet priority
 --]]
@@ -16,6 +10,7 @@ local util = require("vim.lsp.util")
 
 local source = {}
 
+-- NOTE: A fenced code block after convert_input_to_markdown_lines is probably ok.
 -- Creates a markdown representation of the snippet
 ---@return string
 local function get_documentation(snippet)
