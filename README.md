@@ -76,8 +76,7 @@ return {
           end,
         },
         sources = cmp.config.sources({ { name = "mini_snippets" } }),
-        -- more opts
-        mapping = cmp.mapping.preset.insert(),
+        mapping = cmp.mapping.preset.insert(), -- more opts...
       }
     end,
   },
