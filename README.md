@@ -43,6 +43,8 @@ later(function()
 end)
 ```
 
+</details>
+
 <details>
 <summary>lazy.nvim</summary>
 
