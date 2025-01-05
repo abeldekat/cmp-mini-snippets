@@ -109,11 +109,13 @@ end
 ---@param completion_item lsp.CompletionItem
 ---@param callback fun(completion_item: lsp.CompletionItem|nil)
 function source:resolve(completion_item, callback) -- modified from cmp-luasnip:
-  local snip = completion_item.data.snip
-  completion_item.documentation = {
-    kind = cmp.lsp.MarkupKind.Markdown,
-    value = get_documentation(snip),
-  }
+  if not completion_item.documentation then
+    completion_item.documentation = {
+      kind = cmp.lsp.MarkupKind.Markdown,
+      value = get_documentation(completion_item.data.snip),
+    }
+  end
+
   callback(completion_item)
 end
 
