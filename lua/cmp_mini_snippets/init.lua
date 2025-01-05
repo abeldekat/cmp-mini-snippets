@@ -44,9 +44,8 @@ end
 
 ---Return whether this source is available in the current context or not (optional).
 ---@return boolean
-function source:is_available() -- lazy-loading...
-  local ok, _ = pcall(require, "mini.snippets")
-  return ok
+function source:is_available()
+  return _G.MiniSnippets ~= nil -- ensure that user has explicitly setup mini.snippets
 end
 
 ---Invoke completion (required).
