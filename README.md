@@ -86,6 +86,22 @@ return {
 
 </details>
 
+## Options
+
+The default options can be modified in the `sources` field of the `nvim-cmp` spec.
+
+```lua
+sources = cmp.config.sources({
+  {
+    name = "mini_snippets",
+    option = {
+      -- completion items are cached using default mini.snippets context:
+      use_items_cache = false -- default: true
+    }
+  }
+}),
+```
+
 ## LazyVim and mini.snippets
 
 See this [LazyVim] PR for a mini.snippets "extra"...
