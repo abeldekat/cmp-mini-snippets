@@ -121,7 +121,7 @@ end
 
 -- Remove the word inserted by nvim-cmp and insert snippet
 -- It's safe to assume that mode is insert during completion
-local insert_snippet = vim.schedule_wrap(function(snip, word)
+local function insert_snippet(snip, word)
   local cursor = vim.api.nvim_win_get_cursor(0)
   cursor[1] = cursor[1] - 1 -- nvim_buf_set_text: line is zero based
   local start_col = cursor[2] - #word
@@ -129,17 +129,14 @@ local insert_snippet = vim.schedule_wrap(function(snip, word)
 
   local insert = MiniSnippets.config.expand.insert or MiniSnippets.default_insert
   insert({ body = snip.body }) -- insert at cursor
-end)
+end
 
 ---Executed after the item was selected.
 ---@param completion_item lsp.CompletionItem
 ---@param callback fun(completion_item: lsp.CompletionItem|nil)
 function source:execute(completion_item, callback)
-  callback(completion_item)
-
-  -- After callback, scheduled
-  -- Sometimes cmp-nvim-lsp kicks in when it should not(#6)
   insert_snippet(completion_item.data.snip, completion_item.word)
+  callback(completion_item)
 end
 
 return source
