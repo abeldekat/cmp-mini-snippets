@@ -102,9 +102,10 @@ sources = cmp.config.sources({
 }),
 ```
 
-## LazyVim and mini.snippets
+## Remarks
 
-See this [LazyVim] PR for a mini.snippets "extra"...
+See this [LazyVim PR] for a mini.snippets "extra"...
+See this [nvim-cmp PR], providing a solution for outdated completion-items.
 
 ## Acknowledgments
 
@@ -115,5 +116,6 @@ See this [LazyVim] PR for a mini.snippets "extra"...
 [mini.snippets]: https://github.com/echasnovski/mini.snippets
 [nvim-cmp]: https://github.com/hrsh7th/nvim-cmp
 [cmp_luasnip]: https://github.com/saadparwaiz1/cmp_luasnip
-[LazyVim]: https://github.com/LazyVim/LazyVim/pull/5274
 [beta]: https://github.com/echasnovski/mini.nvim/issues/1428
+[LazyVim PR]: https://github.com/LazyVim/LazyVim/pull/5274
+[nvim-cmp PR]: https://github.com/hrsh7th/nvim-cmp/pull/2126
