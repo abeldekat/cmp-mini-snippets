@@ -105,6 +105,7 @@ sources = cmp.config.sources({
 ## Remarks
 
 See this [LazyVim PR] for a mini.snippets "extra"...
+
 See this [nvim-cmp PR], providing a solution for outdated completion-items.
 
 ## Acknowledgments
