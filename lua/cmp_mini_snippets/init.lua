@@ -42,7 +42,7 @@ function source:is_available()
 end
 
 local function to_completion_items(snippets)
-  local result = {}
+  local results = {}
 
   for _, snip in ipairs(snippets) do
     local item = {
@@ -51,9 +51,9 @@ local function to_completion_items(snippets)
       kind = cmp.lsp.CompletionItemKind.Snippet,
       data = { snip = snip },
     }
-    table.insert(result, item)
+    results[#results + 1] = item
   end
-  return result
+  return results
 end
 
 -- NOTE: Completion items are cached by default using the default 'mini.snippets' context
