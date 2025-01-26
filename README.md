@@ -16,7 +16,7 @@ Currently, [mini.snippets] is in [beta].
 local add, later = MiniDeps.add, MiniDeps.later
 
 later(function()
-  add({ -- Do read the installation section in the readme of mini.snippets!
+  add({ -- do read the installation section in the readme of mini.snippets!
     source = "echasnovski/mini.snippets",
     depends = { "rafamadriz/friendly-snippets" }
   })
@@ -24,7 +24,7 @@ later(function()
   -- :h MiniSnippets-examples:
   snippets.setup({ snippets = { snippets.gen_loader.from_lang() }})
 
-  add({ -- Do read the installation section in the readme of nvim-cmp!
+  add({ -- do read the installation section in the readme of nvim-cmp!
     source = "hrsh7th/nvim-cmp",
     depends = { "abeldekat/cmp-mini-snippets" }, -- this plugin
   })
@@ -32,9 +32,10 @@ later(function()
   require'cmp'.setup({
     snippet = {
       expand = function(args) -- mini.snippets expands snippets from lsp...
-        ---@diagnostic disable-next-line: undefined-global
         local insert = MiniSnippets.config.expand.insert or MiniSnippets.default_insert
         insert({ body = args.body }) -- Insert at cursor
+        cmp.resubscribe({ "TextChangedI", "TextChangedP" })
+        require("cmp.config").set_onetime({ sources = {} })
       end,
     },
     sources = cmp.config.sources({ { name = "mini_snippets" } }),
@@ -50,7 +51,7 @@ end)
 
 ```lua
 return {
-  { -- Do read the installation section in the readme of mini.snippets!
+  { -- do read the installation section in the readme of mini.snippets!
     "echasnovski/mini.snippets",
     dependencies = "rafamadriz/friendly-snippets",
     event = "InsertEnter", -- don't depend on other plugins to load...
@@ -61,7 +62,7 @@ return {
     end,
   },
 
-  { -- Do read the installation section in the readme of nvim-cmp!
+  { -- do read the installation section in the readme of nvim-cmp!
     "hrsh7th/nvim-cmp",
     main = "cmp",
     dependencies = { "abeldekat/cmp-mini-snippets" }, -- this plugin
@@ -71,9 +72,10 @@ return {
       return {
         snippet = {
           expand = function(args) -- mini.snippets expands snippets from lsp...
-            ---@diagnostic disable-next-line: undefined-global
             local insert = MiniSnippets.config.expand.insert or MiniSnippets.default_insert
             insert({ body = args.body }) -- Insert at cursor
+            cmp.resubscribe({ "TextChangedI", "TextChangedP" })
+            require("cmp.config").set_onetime({ sources = {} })
           end,
         },
         sources = cmp.config.sources({ { name = "mini_snippets" } }),
@@ -102,15 +104,9 @@ sources = cmp.config.sources({
 }),
 ```
 
-## Remarks
-
-See this [LazyVim PR] for a mini.snippets "extra"...
-
-See this [nvim-cmp PR], providing a solution for outdated completion-items.
-
 ## Acknowledgments
 
-- [cmp_luasnip] by @saadparwaiz1 (especially for function `get_documentation`)
+- [cmp_luasnip] by @saadparwaiz1
 - [nvim-cmp] and sources by @hrsh7th
 - [mini.snippets] by @echasnovski
 
@@ -118,5 +114,3 @@ See this [nvim-cmp PR], providing a solution for outdated completion-items.
 [nvim-cmp]: https://github.com/hrsh7th/nvim-cmp
 [cmp_luasnip]: https://github.com/saadparwaiz1/cmp_luasnip
 [beta]: https://github.com/echasnovski/mini.nvim/issues/1428
-[LazyVim PR]: https://github.com/LazyVim/LazyVim/pull/5274
-[nvim-cmp PR]: https://github.com/hrsh7th/nvim-cmp/pull/2126

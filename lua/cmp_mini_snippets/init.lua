@@ -1,7 +1,7 @@
 -- :h cmp-develop
 
 ---@class cmp_mini_snippets.Options
---- @field use_items_cache? boolean completion items are cached using default mini.snippets context
+---@field use_items_cache? boolean completion items are cached using default mini.snippets context
 
 ---@type cmp_mini_snippets.Options
 local defaults = {
@@ -41,78 +41,71 @@ function source:is_available()
   return _G.MiniSnippets ~= nil -- ensure that user has explicitly setup mini.snippets
 end
 
-local function to_completion_items(snippets)
-  local results = {}
+local function to_items(snippets, context)
+  local items = {}
 
   for _, snip in ipairs(snippets) do
-    local item = {
+    items[#items + 1] = {
       word = snip.prefix,
       label = snip.prefix,
       kind = cmp.lsp.CompletionItemKind.Snippet,
-      data = { snip = snip },
+      data = { snip = snip, context = context },
     }
-    results[#results + 1] = item
   end
-  return results
+  return items
 end
 
 -- NOTE: Completion items are cached by default using the default 'mini.snippets' context
 --
--- vim.b.minisnippets_config can contain buffer-local snippets.
--- a buffer can contain code in multiple languages
+-- 1. vim.b.minisnippets_config can contain buffer-local snippets.
+-- 2. a buffer can contain code in multiple languages
 --
 -- See :h MiniSnippets.default_prepare
 --
--- Return completion items produced from snippets either directly or from cache
-local function get_completion_items(cache)
-  if not cache then return to_completion_items(MiniSnippets.expand({ match = false, insert = false })) end
-
-  -- Compute cache id
-  local _, context = MiniSnippets.default_prepare({})
-  local id = "buf=" .. context.buf_id .. ",lang=" .. context.lang
-
-  -- Return the completion items for this context from cache
-  if cache[id] then return cache[id] end
-
-  -- Retrieve all raw snippets in context and transform into completion items
-  local snippets = MiniSnippets.expand({ match = false, insert = false })
-  local items = to_completion_items(vim.deepcopy(snippets))
-  cache[id] = items
-
-  return items
-end
-
 ---Invoke completion (required).
--- @param params cmp.SourceCompletionApiParams
+---@param params cmp.SourceCompletionApiParams
 ---@param callback fun(response: lsp.CompletionResponse|nil)
 function source:complete(params, callback)
   local opts = get_valid_options(params)
-  local cache = opts.use_items_cache and self.items_cache or nil
-  local items = get_completion_items(cache)
+
+  local _, context = MiniSnippets.default_prepare({})
+  local cache = self.items_cache
+  local cache_key = "buf=" .. context.buf_id .. ",lang=" .. context.lang
+  local items = {}
+
+  if opts.use_items_cache and cache[cache_key] then
+    items = cache[cache_key]
+  else
+    local snippets = MiniSnippets.expand({ match = false, insert = false })
+    items = to_items(vim.deepcopy(snippets), context)
+
+    if opts.use_items_cache then cache[cache_key] = items end
+  end
+
   callback(items)
 end
 
 -- Creates a markdown representation of the snippet
--- A fenced code block after convert_input_to_markdown_lines is probably ok.
 ---@return string
-local function get_documentation(snip)
-  local header = (snip.prefix or "") .. " _ `[" .. vim.bo.filetype .. "]`\n"
-  local docstring = { "", "```" .. vim.bo.filetype, snip.body, "```" }
-  local documentation = { header .. "---", (snip.desc or ""), docstring }
-  documentation = util.convert_input_to_markdown_lines(documentation)
+local function get_documentation(snip, context)
+  local header = (snip.prefix or "")
+  local sep = "---"
+  local desc = (snip.desc or "")
+  local docstring = { "```" .. context.lang, snip.body, "```" }
+  local result = util.convert_input_to_markdown_lines({ header, sep, desc, docstring })
 
-  return table.concat(documentation, "\n")
+  return table.concat(result, "\n")
 end
 
 ---Resolve completion item (optional). This is called right before the completion is about to be displayed.
 ---Useful for setting the text shown in the documentation window (`completion_item.documentation`).
 ---@param completion_item lsp.CompletionItem
 ---@param callback fun(completion_item: lsp.CompletionItem|nil)
-function source:resolve(completion_item, callback) -- modified from cmp-luasnip:
+function source:resolve(completion_item, callback)
   if not completion_item.documentation then
     completion_item.documentation = {
       kind = cmp.lsp.MarkupKind.Markdown,
-      value = get_documentation(completion_item.data.snip),
+      value = get_documentation(completion_item.data.snip, completion_item.data.context),
     }
   end
 
